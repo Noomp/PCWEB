@@ -1,0 +1,16 @@
+body {
+    background-color: #1a1a1a;
+    color: #d1d1d1;
+}
+.navbar {
+    background-color: #333333;
+}
+.navbar-nav .nav-link {
+    color: #d1d1d1 !important;
+}
+.navbar-brand {
+    color: #f8f9fa !important;
+}
+.navbar-toggler-icon {
+    filter: invert(1);
+}

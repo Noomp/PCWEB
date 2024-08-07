@@ -1,0 +1,21 @@
+body {
+    background-image: url(pexels-francesco-ungaro-998641.jpg)
+}
+
+#middle_centering {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.form-control {
+    background: transparent;
+    border: 2px solid #fff;
+    color: white
+}
+
+.btn {
+    border: 2px solid white
+}

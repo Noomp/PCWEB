@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "PCWEB5_API"
+		},
+		{
+			"path": "pcweb5-tinkergram"
+		}
+	],
+	"settings": {
+		"sqltools.connections": [
+			{
+				"mysqlOptions": {
+					"authProtocol": "default",
+					"enableSsl": "Disabled"
+				},
+				"previewLimit": 50,
+				"server": "localhost",
+				"port": 3306,
+				"driver": "MySQL",
+				"name": "pcweb",
+				"username": "root",
+				"password": "password",
+				"database": "company_data"
+			}
+		]
+	}
+}
