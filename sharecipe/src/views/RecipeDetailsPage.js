@@ -105,7 +105,7 @@ export default function RecipeDetailsPage() {
       <body>
         <NavRow />
         <Container>
-          <Col style={{ marginTop: "5rem" }}>
+          <Col>
             <Col>
               <h2 style={{ top: "1rem", left: "20px", padding: "1rem 0 0 1rem" }}>{name}</h2>
               <Image src={image} style={{ width: "50%", borderRadius: "5px", position: "relative", float: "left" }} />
@@ -227,7 +227,7 @@ export default function RecipeDetailsPage() {
               paddingLeft: "1rem", 
               minHeight:"5rem", 
               borderRadius: "8px",
-              marginTop: "1rem"
+              margin: "1rem 0 3rem "
             }}
             className= "paperbg"
             >
