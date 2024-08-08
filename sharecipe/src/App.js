@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import SiteHome from "./views/SiteHome";
+import SiteHome from "./views/SiteHomepage"
 import Login from "./views/Login";
 import SignUp from "./views/SignUp";
 import RecipePageDetails from "./views/RecipeDetailsPage";

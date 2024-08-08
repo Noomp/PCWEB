@@ -109,14 +109,15 @@ export default function RecipeDetailsPage() {
             <Col>
               <h2 style={{ top: "1rem", left: "20px", padding: "1rem 0 0 1rem" }}>{name}</h2>
               <Image src={image} style={{ width: "50%", borderRadius: "5px", position: "relative", float: "left" }} />
-              <div 
-              style={{ 
+              <container 
+              style = {{ 
                 float: "right", 
                 width: "45%", 
                 paddingLeft: "1rem", 
                 minHeight:"27rem", 
-                borderRadius: "8px" }}
-              class="paperOverlay">
+                borderRadius: "8px",
+              }}
+              className = "paperbg">
                 <h4 className="py-3">Ingredients</h4>
                 <Card.Text>
                   {ingredients.split('\n').map((sentence, index) => (
@@ -125,11 +126,11 @@ export default function RecipeDetailsPage() {
                     </div>
                   ))}
                 </Card.Text>
-              </div>
+              </container>
             </Col>
             <div style={{ clear: "both" }}></div>
             <Col style={{ marginTop: "1rem" }}>
-              <div>
+              <div style={{ marginBottom: "1rem" }}>
                 <span style={{ marginRight: "10px" }}>{likes} likes</span>
                 <FaHeart
                   onClick={toggleLike}
@@ -176,15 +177,25 @@ export default function RecipeDetailsPage() {
                   </Card.Link>
                 </>
               )}
-              <Button
+              <Card.Link
                 variant="secondary"
                 onClick={() => setShowComments(!showComments)}
                 aria-controls="comments-section"
                 aria-expanded={showComments}
-                style={{ marginTop: "1rem" }}
+                style={{
+                  backgroundColor: "grey",
+                  cursor: "pointer",
+                  border: "solid",
+                  borderRadius: "5px",
+                  borderColor: "grey",
+                  textDecoration: "none",
+                  color: "white",
+                  padding: "2px 5px",
+                  marginLeft: "10px"
+                }}
               >
                 Show Comments
-              </Button>
+              </Card.Link>
               <Collapse in={showComments}>
                 <div id="comments-section">
                   {comments.map((comment, index) => (
@@ -209,8 +220,18 @@ export default function RecipeDetailsPage() {
                 </div>
               </Collapse>
             </Col>
-            <Col style={{ marginTop: "1rem" }}>
-              <h4>Procedure</h4>
+            <Col 
+            style = {{ 
+              float: "right", 
+              width: "100%", 
+              paddingLeft: "1rem", 
+              minHeight:"5rem", 
+              borderRadius: "8px",
+              marginTop: "1rem"
+            }}
+            className= "paperbg"
+            >
+              <h4 className="my-3">Procedure</h4>
               <Card.Text>
                 {procedure.split('.').map((sentence, index) => (
                   <div key={index}>
