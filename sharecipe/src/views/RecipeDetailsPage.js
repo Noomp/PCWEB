@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Container, Image, Form, Button, Modal } from "react-bootstrap";
+import { Card, Col, Container, Image, Form, Button, Modal, Collapse } from "react-bootstrap"; // Added Collapse for comments
 import { useNavigate, useParams } from "react-router-dom";
 import NavRow from "../templates/NavRow";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
 import { deleteDoc, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { getStorage, ref, deleteObject } from "firebase/storage";
+import { FaHeart } from "react-icons/fa"; // Added react-icons for like button
 import "../css/style.css";
 
 export default function RecipeDetailsPage() {
@@ -19,6 +20,7 @@ export default function RecipeDetailsPage() {
     const [likedBy, setLikedBy] = useState([]);
     const [userId, setUserId] = useState(""); // add state for storing user ID of the recipe creator
     const [showModal, setShowModal] = useState(false);
+    const [showComments, setShowComments] = useState(false); // State for comments section
     const [user, loading] = useAuthState(auth);
     const params = useParams();
     const id = params.id;
@@ -105,77 +107,86 @@ export default function RecipeDetailsPage() {
         <Container>
           <Col style={{ marginTop: "5rem" }}>
             <Col>
-              <Image src={image} style={{ width: "100%", borderRadius: "5px", position: "relative" }} />
               <h2 style={{ top: "1rem", left: "20px", padding: "1rem 0 0 1rem" }}>{name}</h2>
-            </Col>
-            <Col>
-              <Card style={{ marginTop: "1rem" }}>
-                <Card.Body>
-                  <h4>Ingredients</h4>
-                  <Card.Text>{ingredients}</Card.Text>
-                  <h4>Procedure</h4>
-                  <Card.Text>
-                    {procedure.split('.').map((sentence, index) => (
+              <Image src={image} style={{ width: "50%", borderRadius: "5px", position: "relative", float: "left" }} />
+              <div 
+              style={{ 
+                float: "right", 
+                width: "45%", 
+                paddingLeft: "1rem", 
+                minHeight:"27rem", 
+                borderRadius: "8px" }}
+              class="paperOverlay">
+                <h4 className="py-3">Ingredients</h4>
+                <Card.Text>
+                  {ingredients.split('\n').map((sentence, index) => (
                     <div key={index}>
-                        {sentence.trim() && <p>{sentence.trim()}.</p>}
+                      {sentence.trim() && <p>{sentence.trim()}.</p>}
                     </div>
-                    ))}
-                  </Card.Text>
-                  <div>
-                    <span style={{ marginRight: "10px" }}>{likes} likes</span>
-                    <button
-                      onClick={toggleLike}
-                      style={{
-                        backgroundColor: likedBy.includes(user?.uid) ? "#212529" : "grey",
-                        cursor: "pointer",
-                        border: "solid",
-                        borderRadius: "5px",
-                        borderColor: likedBy.includes(user?.uid) ? "#212529" : "grey",
-                        color: "white",
-                        padding: "2px 5px",
-                        marginBottom: "1rem"
-                      }}
-                    >
-                      {likedBy.includes(user?.uid) ? "Unlike" : "Like"}
-                    </button>
-                  </div>
-                  {user && user.uid === userId && (
-                    <>
-                      <Card.Link
-                        href={`/edit/${id}`}
-                        style={{
-                          backgroundColor: "grey",
-                          cursor: "pointer",
-                          border: "solid",
-                          borderRadius: "5px",
-                          borderColor: "grey",
-                          textDecoration: "none",
-                          color: "white",
-                          padding: "2px 5px",
-                          marginLeft: "1px"
-                        }}
-                      >
-                        Edit
-                      </Card.Link>
-                      <Card.Link
-                        onClick={() => deleteRecipe(id)}
-                        style={{
-                          backgroundColor: "darkred",
-                          cursor: "pointer",
-                          border: "solid",
-                          borderRadius: "5px",
-                          borderColor: "darkred",
-                          textDecoration: "none",
-                          color: "white",
-                          padding: "2px 5px",
-                          marginLeft: "10px"
-                        }}
-                      >
-                        Delete
-                      </Card.Link>
-                    </>
-                  )}
-                  <h4 className="mt-2">Comments</h4>
+                  ))}
+                </Card.Text>
+              </div>
+            </Col>
+            <div style={{ clear: "both" }}></div>
+            <Col style={{ marginTop: "1rem" }}>
+              <div>
+                <span style={{ marginRight: "10px" }}>{likes} likes</span>
+                <FaHeart
+                  onClick={toggleLike}
+                  style={{
+                    cursor: "pointer",
+                    color: likedBy.includes(user?.uid) ? "red" : "grey",
+                    fontSize: "1.5rem"
+                  }}
+                />
+              </div>
+              {user && user.uid === userId && (
+                <>
+                  <Card.Link
+                    href={`/edit/${id}`}
+                    style={{
+                      backgroundColor: "grey",
+                      cursor: "pointer",
+                      border: "solid",
+                      borderRadius: "5px",
+                      borderColor: "grey",
+                      textDecoration: "none",
+                      color: "white",
+                      padding: "2px 5px",
+                      marginLeft: "1px"
+                    }}
+                  >
+                    Edit
+                  </Card.Link>
+                  <Card.Link
+                    onClick={() => deleteRecipe(id)}
+                    style={{
+                      backgroundColor: "darkred",
+                      cursor: "pointer",
+                      border: "solid",
+                      borderRadius: "5px",
+                      borderColor: "darkred",
+                      textDecoration: "none",
+                      color: "white",
+                      padding: "2px 5px",
+                      marginLeft: "10px"
+                    }}
+                  >
+                    Delete
+                  </Card.Link>
+                </>
+              )}
+              <Button
+                variant="secondary"
+                onClick={() => setShowComments(!showComments)}
+                aria-controls="comments-section"
+                aria-expanded={showComments}
+                style={{ marginTop: "1rem" }}
+              >
+                Show Comments
+              </Button>
+              <Collapse in={showComments}>
+                <div id="comments-section">
                   {comments.map((comment, index) => (
                     <div key={index} style={{ marginBottom: "10px", backgroundColor: "#ddd", padding: "10px", borderRadius: "5px" }}>
                       <strong>{comment.user}:</strong> {comment.text}
@@ -195,8 +206,18 @@ export default function RecipeDetailsPage() {
                       Submit
                     </Button>
                   </Form>
-                </Card.Body>
-              </Card>
+                </div>
+              </Collapse>
+            </Col>
+            <Col style={{ marginTop: "1rem" }}>
+              <h4>Procedure</h4>
+              <Card.Text>
+                {procedure.split('.').map((sentence, index) => (
+                  <div key={index}>
+                    {sentence.trim() && <p>{sentence.trim()}.</p>}
+                  </div>
+                ))}
+              </Card.Text>
             </Col>
           </Col>
         </Container>
@@ -220,4 +241,3 @@ export default function RecipeDetailsPage() {
       </body>
     );
   }
-  
