@@ -49,10 +49,10 @@ function ImageSquare({ recipe }) {
         textDecoration: "None",
       }}
     >
-      <Col key={id} className="my-3">
-        <Card style={{ height: "fit-content", width: "fit-content" }}>
+      <Col key={id} className="my-3" >
+        <Card style={{ height: "fit-content", width: "fit-content", border: "None", borderRadius: "1rem", overflow: "hidden" }}>
           <Card.Img variant="top" src={image} style={{ width:"18rem", height:"18rem", objectFit:"cover" }} />
-          <Card.Body style={{ backgroundColor:"#E4CCFF", height:"25%" }}>
+          <Card.Body style={{ backgroundColor:"#E4CCFF" }}>
             <Card.Title>{name}</Card.Title>
           </Card.Body>
         </Card>

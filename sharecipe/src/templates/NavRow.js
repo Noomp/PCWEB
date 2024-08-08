@@ -8,7 +8,7 @@ const NavRow = () => {
   const [user] = useAuthState(auth);
 
   return (
-    <Navbar variant="primary" style = {{ background: "#E4CCFF"}}>
+    <Navbar variant="primary" style = {{ background: "#E4CCFF", position: "sticky", top: 0, zIndex: 1}}>
       <Container>
         <Navbar.Brand href="/">🍽️ Sharecipe</Navbar.Brand>
         <Nav>
